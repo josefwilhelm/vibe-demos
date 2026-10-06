@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Preis-Rechner Reinigung</title>
+<link rel="icon" href="data:,">
+<style>
+  :root { --blau:#2b7de9; --hell:#eef5ff; --text:#1d2a3a; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: system-ui, sans-serif; background:var(--hell); color:var(--text); min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; }
+  .card { background:#fff; border-radius:20px; padding:32px; max-width:520px; width:100%; box-shadow:0 10px 30px rgba(43,125,233,.15); }
+  h1 { margin:0 0 6px; font-size:26px; }
+  .sub { margin:0 0 24px; color:#5b6b7e; }
+  fieldset { border:0; padding:0; margin:0 0 22px; }
+  legend { font-weight:600; margin-bottom:10px; }
+  .opts { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .opts input { position:absolute; opacity:0; }
+  .opts label { display:block; border:2px solid #d5e3f7; border-radius:12px; padding:12px 6px; text-align:center; cursor:pointer; font-size:15px; }
+  .opts label small { display:block; color:#7a8aa0; font-size:12px; }
+  .opts input:checked + label { border-color:var(--blau); background:var(--hell); font-weight:600; }
+  .opts input:focus-visible + label { outline:3px solid var(--blau); outline-offset:2px; }
+  .opt { position:relative; }
+  .result { background:var(--hell); border-radius:14px; padding:18px; text-align:center; margin-bottom:16px; }
+  .result .preis { font-size:36px; font-weight:700; color:var(--blau); }
+  .result .hint { color:#5b6b7e; font-size:13px; }
+  button { width:100%; background:var(--blau); color:#fff; border:0; border-radius:12px; padding:14px; font-size:17px; font-weight:600; cursor:pointer; }
+  button:disabled { background:#b9c9df; cursor:not-allowed; }
+  .ok { margin-top:14px; color:#1d7a46; text-align:center; font-weight:600; }
+  .note { margin-top:18px; font-size:12px; color:#7a8aa0; text-align:center; }
+</style>
+</head>
+<body>
+<main class="card">
+  <h1>Dein Richtpreis für die Reinigung</h1>
+  <p class="sub">Wähle Größe und Häufigkeit. Du siehst sofort einen Richtpreis.</p>
+
+  <fieldset>
+    <legend>Wohnungsgröße</legend>
+    <div class="opts">
+      <div class="opt"><input type="radio" name="groesse" id="g-klein" value="klein"><label for="g-klein">Klein<small>bis 50 m²</small></label></div>
+      <div class="opt"><input type="radio" name="groesse" id="g-mittel" value="mittel"><label for="g-mittel">Mittel<small>50 bis 90 m²</small></label></div>
+      <div class="opt"><input type="radio" name="groesse" id="g-gross" value="gross"><label for="g-gross">Groß<small>ab 90 m²</small></label></div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Häufigkeit</legend>
+    <div class="opts">
+      <div class="opt"><input type="radio" name="haeufigkeit" id="h-einmalig" value="einmalig"><label for="h-einmalig">Einmalig</label></div>
+      <div class="opt"><input type="radio" name="haeufigkeit" id="h-woechentlich" value="woechentlich"><label for="h-woechentlich">Wöchentlich</label></div>
+      <div class="opt"><input type="radio" name="haeufigkeit" id="h-monatlich" value="monatlich"><label for="h-monatlich">Monatlich</label></div>
+    </div>
+  </fieldset>
+
+  <div class="result" aria-live="polite">
+    <div class="preis" id="preis">–</div>
+    <div class="hint" id="hint">Bitte wähle oben beide Angaben.</div>
+  </div>
+
+  <button id="senden" disabled>Anfrage senden</button>
+  <div class="ok" id="ok" hidden>Danke! Wir melden uns bei dir.</div>
+  <p class="note">Beispielpreise zur Demonstration, kein echtes Angebot.</p>
+</main>
+<script>
+  // Beispielpreise pro Reinigung in Euro
+  const basis = { klein: 60, mittel: 90, gross: 130 };
+  // Rabatt je nach Häufigkeit (regelmäßige Kunden zahlen weniger pro Einsatz)
+  const faktor = { einmalig: 1, woechentlich: 0.8, monatlich: 0.9 };
+  const einsaetze = { einmalig: null, woechentlich: "pro Woche", monatlich: "pro Monat" };
+  const eur = n => n.toLocaleString("de-DE", { style:"currency", currency:"EUR", maximumFractionDigits:0 });
+
+  function aktualisieren() {
+    const g = document.querySelector('input[name=groesse]:checked');
+    const h = document.querySelector('input[name=haeufigkeit]:checked');
+    const btn = document.getElementById('senden');
+    document.getElementById('ok').hidden = true;
+    if (!g || !h) { btn.disabled = true; return; }
+    const preis = basis[g.value] * faktor[h.value];
+    document.getElementById('preis').textContent = "ca. " + eur(preis);
+    document.getElementById('hint').textContent = h.value === "einmalig"
+      ? "einmalige Reinigung, Richtpreis (Beispielpreis)"
+      : "Richtpreis " + einsaetze[h.value] + " (Beispielpreis)";
+    btn.disabled = false;
+  }
+  document.querySelectorAll('input[type=radio]').forEach(r => r.addEventListener('change', aktualisieren));
+  document.getElementById('senden').addEventListener('click', () => { document.getElementById('ok').hidden = false; });
+</script>
+</body>
+</html>

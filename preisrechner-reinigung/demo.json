@@ -1,0 +1,14 @@
+{
+  "date": "2026-10-06",
+  "tool": "Claude Code",
+  "prompt": "Bau mir einen einfachen Preis-Rechner für meine Reinigungsfirma. Der Kunde wählt die Wohnungsgröße (klein, mittel, groß) und die Häufigkeit (einmalig, wöchentlich, monatlich). Zeig darunter einen Richtpreis an und einen Button „Anfrage senden\". Alles auf Deutsch, freundliches Design.",
+  "result": "Einzelne index.html mit CSS und JavaScript inline, keine Abhängigkeiten. Beispielpreise im UI als Beispielpreise gekennzeichnet.",
+  "iterations": 3,
+  "iterations_note": "1 Erstversion + 2 Nachbesserungen",
+  "fixes": [
+    "Auswahl-Karten (Größe/Häufigkeit) waren im ersten Screenshot kaputt dargestellt: Rahmen der Labels zerrissen, weil die Labels nicht als Block gesetzt waren. Fix: display:block am Label.",
+    "Browser-Konsole meldete 404 für /favicon.ico. Fix: leeres Favicon im head gesetzt."
+  ],
+  "duration_seconds": 72,
+  "duration_note": "Wall-Clock von Start bis fertige Screenshots (inkl. Screenshot der Startseite, ohne Optimierung der Bilder)"
+}
