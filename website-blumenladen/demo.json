@@ -1,0 +1,14 @@
+{
+  "date": "2026-10-06",
+  "tool": "Claude Code",
+  "prompt": "Bau mir eine einseitige Website für meinen Blumenladen \"Sonnenblume\". Oben ein großes Foto und der Name. Darunter Öffnungszeiten, eine kurze Vorstellung und unsere Adresse. Freundliche, warme Farben. Alles auf Deutsch.",
+  "result": "Einzelne index.html mit CSS inline, keine Abhängigkeiten. Statt eines Fotos eine selbst gezeichnete SVG-Sonnenblume im Kopfbereich, weil die KI kein echtes Foto liefern kann und keine fremden Bilder verwendet wurden. Name, Adresse und Zeiten sind erfundene Beispieldaten und im Seitenfuß so gekennzeichnet.",
+  "iterations": 1,
+  "iterations_note": "1 Erstversion, keine Nachbesserung nach den Screenshots nötig",
+  "fixes": [],
+  "notes": [
+    "Vor dem ersten Screenshot hat die KI einen von ihr zusätzlich eingebauten Button \"Jetzt anrufen\" wieder entfernt, weil er nicht im Prompt stand."
+  ],
+  "duration_seconds": 42,
+  "duration_note": "Wall-Clock der KI-Arbeit (Datei schreiben, im Browser öffnen, Screenshots ansehen, Fehler beheben), gemessen an den Zeitstempeln der Claude-Code-Sitzung. Reine KI-Rechenzeit ohne menschliches Nachdenken und Testen, ohne Bildoptimierung."
+}

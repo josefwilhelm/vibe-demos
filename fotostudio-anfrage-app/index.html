@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fotostudio Lichtblick: Anfrage</title>
+<link rel="icon" href="data:,">
+<style>
+  :root { --bg:#fbf4ea; --ink:#33261c; --muted:#7a6857; --accent:#b8562b; --accent-dark:#8f3f1c; --card:#fff; --line:#ead9c3; --ok:#2f6b3a; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:17px/1.55 Georgia,"Times New Roman",serif; }
+  .demo-bar { background:#33261c; color:#f6e9d6; font:13px/1.4 system-ui,sans-serif; padding:8px 16px; text-align:center; }
+  .wrap { max-width:860px; margin:0 auto; padding:0 20px 56px; }
+  header.top { display:flex; justify-content:space-between; align-items:center; padding:22px 0; }
+  .logo { font-size:1.5rem; font-weight:700; color:var(--accent-dark); }
+  nav { display:flex; white-space:nowrap; }
+  nav button { background:none; border:0; font:600 .95rem system-ui,sans-serif; color:var(--muted); cursor:pointer; padding:6px 0 6px 18px; }
+  nav button.active { color:var(--accent-dark); }
+  h1 { font-size:clamp(1.8rem,5vw,2.6rem); line-height:1.15; margin:8px 0 8px; }
+  h2 { font-size:1.3rem; margin:32px 0 12px; }
+  .lead { color:var(--muted); margin:0 0 8px; }
+  .packages { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  .pkg { background:var(--card); border:2px solid var(--line); border-radius:16px; padding:18px; text-align:left; cursor:pointer; font:inherit; color:inherit; display:block; }
+  .pkg:hover { border-color:#d9b88f; }
+  .pkg[aria-pressed="true"] { border-color:var(--accent); box-shadow:0 0 0 3px rgba(184,86,43,.15); }
+  .pkg .name { font-weight:700; font-size:1.15rem; display:block; }
+  .pkg .price { font:700 1.6rem Georgia,serif; color:var(--accent-dark); display:block; margin:6px 0; }
+  .pkg .desc { font:.9rem/1.4 system-ui,sans-serif; color:var(--muted); display:block; }
+  .selected { margin-top:14px; font:600 1rem system-ui,sans-serif; }
+  form, .panel { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:22px; }
+  label { display:block; font:600 .9rem system-ui,sans-serif; margin:0 0 14px; }
+  input[type=text], input[type=email], input[type=password] { display:block; width:100%; margin-top:6px; padding:11px 12px; font:1rem system-ui,sans-serif; border:1px solid #d8c4a8; border-radius:10px; background:#fffdf9; }
+  input:focus-visible, button:focus-visible { outline:3px solid rgba(184,86,43,.4); outline-offset:2px; }
+  .btn { background:var(--accent); color:#fff; border:0; border-radius:999px; padding:12px 24px; font:600 1rem system-ui,sans-serif; cursor:pointer; }
+  .btn:hover { background:var(--accent-dark); }
+  .msg { margin-top:14px; font:600 .95rem system-ui,sans-serif; }
+  .msg.ok { color:var(--ok); } .msg.err { color:#b3261e; }
+  .hint { font:.85rem/1.4 system-ui,sans-serif; color:var(--muted); margin-top:10px; }
+  table { width:100%; border-collapse:collapse; font:.95rem system-ui,sans-serif; }
+  th,td { text-align:left; padding:10px 8px; border-bottom:1px solid var(--line); }
+  th { color:var(--muted); font-weight:600; font-size:.8rem; text-transform:uppercase; letter-spacing:.04em; }
+  .tag { display:inline-block; font:600 .7rem system-ui,sans-serif; background:#f3e3c8; color:#7a5a2a; padding:2px 8px; border-radius:999px; }
+  .row-actions { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; gap:12px; flex-wrap:wrap; }
+  .link { background:none; border:0; color:var(--accent-dark); text-decoration:underline; cursor:pointer; font:inherit; font-size:.9rem; padding:0; }
+  [hidden]{display:none!important;}
+  @media (max-width:680px){ .logo{font-size:1.15rem;} nav button{padding-left:12px;} .packages{grid-template-columns:1fr;} .hide-m{display:none;} .wrap{padding:0 16px 40px;} }
+</style>
+</head>
+<body>
+<div class="demo-bar">Demo mit Beispieldaten. Alles bleibt nur in deinem Browser. Das Passwort ist eine Attrappe, eine echte App braucht ein Backend.</div>
+<div class="wrap">
+  <header class="top">
+    <div class="logo">Fotostudio Lichtblick</div>
+    <nav><button id="nav-kunde" class="active" type="button">Anfrage</button><button id="nav-admin" type="button">Inhaber-Bereich</button></nav>
+  </header>
+
+  <section id="view-kunde">
+    <h1>Welches Foto-Paket passt zu dir?</h1>
+    <p class="lead">Wähl ein Paket, sieh den Preis und schick uns deine Anfrage.</p>
+    <h2>1. Paket wählen</h2>
+    <div class="packages" id="packages"></div>
+    <p class="selected" id="selected">Noch kein Paket gewählt.</p>
+    <h2>2. Deine Anfrage</h2>
+    <form id="form" novalidate>
+      <label>Name<input type="text" id="name" autocomplete="name" required></label>
+      <label>E-Mail<input type="email" id="email" autocomplete="email" required></label>
+      <button class="btn" type="submit">Anfrage senden</button>
+      <div class="msg" id="formmsg" role="status" aria-live="polite"></div>
+    </form>
+  </section>
+
+  <section id="view-admin" hidden>
+    <h1>Inhaber-Bereich</h1>
+    <div class="panel" id="login">
+      <form id="loginform" novalidate>
+        <label>Passwort<input type="password" id="pw" autocomplete="off"></label>
+        <button class="btn" type="submit">Anmelden</button>
+        <div class="msg err" id="loginmsg" role="alert"></div>
+        <p class="hint">Demo-Passwort: <strong>demo1234</strong>. Es steht offen im Code der Seite und schützt nichts. Echten Schutz bietet nur ein Backend mit Login.</p>
+      </form>
+    </div>
+    <div class="panel" id="list" hidden>
+      <div class="row-actions"><strong id="count"></strong><span><button class="link" id="reset" type="button">Beispieldaten zurücksetzen</button> · <button class="link" id="logout" type="button">Abmelden</button></span></div>
+      <table><thead><tr><th>Eingang</th><th>Name</th><th class="hide-m">E-Mail</th><th>Paket</th></tr></thead><tbody id="rows"></tbody></table>
+    </div>
+  </section>
+</div>
+<script>
+const PACKAGES = [
+  { id:'portraet', name:'Porträt', price:89, desc:'30 Minuten, 5 bearbeitete Bilder' },
+  { id:'bewerbung', name:'Bewerbung', price:69, desc:'20 Minuten, 3 bearbeitete Bilder' },
+  { id:'familie', name:'Familie', price:149, desc:'60 Minuten, 10 bearbeitete Bilder' }
+];
+const DEMO_PASSWORD = 'demo1234';
+const KEY = 'fotostudio-demo-anfragen';
+const SEED = [
+  { t:'2026-10-02', name:'Anna Beispiel', email:'anna@beispiel.example', pkg:'Familie', example:true },
+  { t:'2026-10-04', name:'Ben Muster', email:'ben@beispiel.example', pkg:'Bewerbung', example:true },
+  { t:'2026-10-05', name:'Clara Test', email:'clara@beispiel.example', pkg:'Porträt', example:true }
+];
+const $ = id => document.getElementById(id);
+const eur = n => n.toLocaleString('de-DE') + ' €';
+let chosen = null, loggedIn = false;
+
+function load(){ try { const r = JSON.parse(localStorage.getItem(KEY)); if (Array.isArray(r)) return r; } catch(e){} return SEED.slice(); }
+function save(a){ try { localStorage.setItem(KEY, JSON.stringify(a)); } catch(e){} }
+
+function renderPackages(){
+  $('packages').innerHTML = '';
+  PACKAGES.forEach(p => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'pkg'; b.setAttribute('aria-pressed', chosen === p.id);
+    b.innerHTML = '<span class="name"></span><span class="price"></span><span class="desc"></span>';
+    b.querySelector('.name').textContent = p.name;
+    b.querySelector('.price').textContent = eur(p.price);
+    b.querySelector('.desc').textContent = p.desc;
+    b.onclick = () => { chosen = p.id; renderPackages(); };
+    $('packages').appendChild(b);
+  });
+  const p = PACKAGES.find(x => x.id === chosen);
+  $('selected').textContent = p ? 'Gewählt: ' + p.name + ', ' + eur(p.price) : 'Noch kein Paket gewählt.';
+}
+
+$('form').addEventListener('submit', e => {
+  e.preventDefault();
+  const name = $('name').value.trim(), email = $('email').value.trim(), msg = $('formmsg');
+  const p = PACKAGES.find(x => x.id === chosen);
+  msg.className = 'msg err';
+  if (!p) { msg.textContent = 'Bitte wähl zuerst ein Paket.'; return; }
+  if (!name) { msg.textContent = 'Bitte gib deinen Namen ein.'; return; }
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { msg.textContent = 'Bitte gib eine gültige E-Mail-Adresse ein.'; return; }
+  const all = load();
+  all.push({ t:new Date().toISOString().slice(0,10), name, email, pkg:p.name, example:false });
+  save(all);
+  msg.className = 'msg ok';
+  msg.textContent = 'Danke, ' + name + '! Deine Anfrage für „' + p.name + '“ ist gespeichert (nur in diesem Browser).';
+  $('form').reset(); chosen = null; renderPackages();
+});
+
+function renderList(){
+  const all = load();
+  $('count').textContent = all.length + (all.length === 1 ? ' Anfrage' : ' Anfragen');
+  $('rows').innerHTML = '';
+  all.slice().reverse().forEach(a => {
+    const tr = document.createElement('tr');
+    [a.t, a.name, a.email, a.pkg].forEach((v, i) => {
+      const td = document.createElement('td'); td.textContent = v;
+      if (i === 2) td.className = 'hide-m';
+      if (i === 1 && a.example) { td.appendChild(document.createTextNode(' ')); const s = document.createElement('span'); s.className = 'tag'; s.textContent = 'Beispiel'; td.appendChild(s); }
+      tr.appendChild(td);
+    });
+    $('rows').appendChild(tr);
+  });
+}
+function showAdmin(){ $('login').hidden = loggedIn; $('list').hidden = !loggedIn; if (loggedIn) renderList(); }
+$('loginform').addEventListener('submit', e => {
+  e.preventDefault();
+  if ($('pw').value === DEMO_PASSWORD) { loggedIn = true; $('loginmsg').textContent = ''; $('pw').value = ''; showAdmin(); }
+  else $('loginmsg').textContent = 'Falsches Passwort.';
+});
+$('logout').onclick = () => { loggedIn = false; showAdmin(); };
+$('reset').onclick = () => { save(SEED.slice()); renderList(); };
+
+function route(){
+  const admin = location.hash === '#admin';
+  $('view-kunde').hidden = admin; $('view-admin').hidden = !admin;
+  $('nav-kunde').classList.toggle('active', !admin); $('nav-admin').classList.toggle('active', admin);
+  if (admin) showAdmin();
+}
+$('nav-kunde').onclick = () => { location.hash = ''; route(); };
+$('nav-admin').onclick = () => { location.hash = 'admin'; route(); };
+window.addEventListener('hashchange', route);
+renderPackages(); route();
+</script>
+</body>
+</html>

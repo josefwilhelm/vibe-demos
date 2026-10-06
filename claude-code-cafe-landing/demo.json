@@ -1,0 +1,12 @@
+{
+  "date": "2026-10-06",
+  "tool": "Claude Code",
+  "prompt": "Bau mir eine einseitige Website für mein Café \"Kaffeeklatsch\": oben Name und Slogan, darunter Öffnungszeiten, eine kurze Speisekarte mit Preisen und ein Kontaktformular mit Name, E-Mail und Nachricht. Alles auf Deutsch, gemütliches Design.",
+  "result": "Einzelne index.html mit CSS und JavaScript inline. Das Formular prüft die Eingaben, verschickt aber nichts und sagt das auch auf der Seite. Café, Karte und Preise sind erfundene Beispieldaten.",
+  "comparison_note": "Nur die Claude-Code-Seite wurde getestet. Ein Lovable-Test mit demselben Prompt wurde nicht gemacht und ist nicht Teil dieser Demo.",
+  "iterations": 1,
+  "iterations_note": "1 Erstversion, keine Nachbesserung nach den Screenshots nötig",
+  "fixes": [],
+  "duration_seconds": 30,
+  "duration_note": "Wall-Clock der KI-Arbeit (Datei schreiben, im Browser öffnen, Screenshots ansehen, Fehler beheben), gemessen an den Zeitstempeln der Claude-Code-Sitzung. Reine KI-Rechenzeit ohne menschliches Nachdenken und Testen, ohne Bildoptimierung."
+}
